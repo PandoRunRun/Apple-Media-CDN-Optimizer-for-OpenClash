@@ -1,0 +1,11 @@
+{
+	"admin/services/apple_cdn_opt": {
+		"title": "Apple CDN Optimizer",
+		"action": {
+			"type": "cbi",
+			"path": "apple_cdn_opt"
+		},
+		"order": 60,
+		"dependent": true
+	}
+}

@@ -1,0 +1,40 @@
+name: Build and Release IPK
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build IPK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Make Build Script Executable
+        run: chmod +x build.sh
+
+      - name: Build IPK Package
+        run: ./build.sh
+
+      - name: Upload IPK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openwrt-ipk
+          path: luci-app-apple-cdn-opt_*.ipk
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: luci-app-apple-cdn-opt_*.ipk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

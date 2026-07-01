@@ -1,0 +1,14 @@
+{
+	"luci-app-apple-cdn-opt": {
+		"description": "Grant access to Apple CDN Optimizer configuration and RPC",
+		"read": {
+			"uci": [ "apple_cdn_opt" ],
+			"file": {
+				"/var/run/apple_cdn_opt.json": [ "read" ]
+			}
+		},
+		"write": {
+			"uci": [ "apple_cdn_opt" ]
+		}
+	}
+}

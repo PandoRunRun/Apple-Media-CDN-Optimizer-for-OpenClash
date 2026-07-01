@@ -1,0 +1,30 @@
+#!/bin/sh
+if [ -z "$IPKG_INSTROOT" ]; then
+	chmod +x /etc/init.d/apple_cdn_opt
+	chmod +x /usr/share/apple-cdn-opt/apple-cdn-opt.sh
+	
+	# Forcefully clean and re-align old UCI domains to match the new 6-domain default
+	if uci -q get apple_cdn_opt.@domains[0] >/dev/null; then
+		uci -q delete apple_cdn_opt.@domains[0].domain
+		uci -q add_list apple_cdn_opt.@domains[0].domain='vod-ap-aoc.tv.apple.com'
+		uci -q add_list apple_cdn_opt.@domains[0].domain='vod-ap1-aoc.tv.apple.com'
+		uci -q add_list apple_cdn_opt.@domains[0].domain='vod-fa-aoc.tv.apple.com'
+		uci -q add_list apple_cdn_opt.@domains[0].domain='mvod.itunes.apple.com'
+		uci -q add_list apple_cdn_opt.@domains[0].domain='mvod.itunes.g.aaplimg.com'
+		uci -q add_list apple_cdn_opt.@domains[0].domain='aod.itunes.apple.com'
+		uci commit apple_cdn_opt
+	fi
+	
+	# Clear all LuCI index, routing, and compilation caches
+	rm -f /tmp/luci-indexcache
+	rm -rf /tmp/luci-modulecache
+	rm -rf /var/luci-modulecache
+	
+	# Restart uwsgi (if Nginx/uwsgi runs LuCI) and uhttpd (default LuCI web server)
+	/etc/init.d/uwsgi restart >/dev/null 2>&1 || true
+	/etc/init.d/uhttpd restart >/dev/null 2>&1 || true
+	
+	/etc/init.d/apple_cdn_opt enable
+	/etc/init.d/apple_cdn_opt start
+fi
+exit 0

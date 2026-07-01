@@ -1,0 +1,7 @@
+Package: luci-app-apple-cdn-opt
+Version: 1.0-46
+Depends: curl, dnsmasq
+Section: luci
+Architecture: all
+Maintainer: Antigravity AI
+Description: Periodically optimizes Apple TV+ and Apple Music CDN connections by testing and updating hosts.

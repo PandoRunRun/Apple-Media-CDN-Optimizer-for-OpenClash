@@ -1,0 +1,33 @@
+#!/bin/sh
+if [ -z "$IPKG_INSTROOT" ]; then
+	# 1. Clean up hosts and temporary status/log files
+	rm -f /etc/apple_cdn_opt.hosts
+	rm -f /var/run/apple_cdn_opt.json
+	rm -f /var/run/apple_cdn_opt.log
+	rm -f /var/run/apple-cdn-opt.lock
+	
+	# Clean system /etc/hosts overrides as well
+	sed -i '/# APPLE-CDN-OPT-START/,/# APPLE-CDN-OPT-END/d' /etc/hosts
+	
+	# Clean OpenClash custom hosts as well
+	sed -i '/# APPLE-CDN-OPT-START/,/# APPLE-CDN-OPT-END/d' /etc/openclash/custom/openclash_custom_hosts.list 2>/dev/null
+
+	# Clean OpenClash subscription overwrite module as well
+	rm -f /www/apple_cdn_opt_module.yaml
+
+	# 2. Clean crontab entries
+	sed -i '/apple-cdn-opt.sh/d' /etc/crontabs/root 2>/dev/null
+
+	# 3. Deregister hosts file from dnsmasq
+	if uci -q get dhcp.@dnsmasq[0].addnhosts | grep -q "/etc/apple_cdn_opt.hosts"; then
+		uci del_list dhcp.@dnsmasq[0].addnhosts="/etc/apple_cdn_opt.hosts"
+		uci commit dhcp
+		/etc/init.d/dnsmasq reload >/dev/null 2>&1
+	fi
+
+	# 4. Clear LuCI index caches
+	rm -f /tmp/luci-indexcache
+	rm -rf /tmp/luci-modulecache
+	rm -rf /var/luci-modulecache
+fi
+exit 0

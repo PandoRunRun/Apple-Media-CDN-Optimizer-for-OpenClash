@@ -1,0 +1,588 @@
+<!-- Custom CSS for rich styling -->
+<style>
+	.opt-container {
+		background-color: #f7f9fa;
+		border-radius: 8px;
+		padding: 20px;
+		margin-bottom: 20px;
+		border: 1px solid #e1e4e6;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+	}
+	.dark-mode .opt-container,
+	[data-theme="dark"] .opt-container {
+		background-color: #1e1e1e;
+		border: 1px solid #2d2d2d;
+	}
+	.opt-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+		flex-wrap: wrap;
+		gap: 15px;
+	}
+	.status-badge {
+		display: inline-flex;
+		align-items: center;
+		padding: 6px 14px;
+		border-radius: 20px;
+		font-weight: bold;
+		font-size: 13px;
+		margin-right: 15px;
+	}
+	.badge-idle { background-color: #e2e8f0; color: #4a5568; }
+	.badge-running { background-color: #feebc8; color: #c05621; animation: pulse 1.5s infinite; }
+	.badge-success { background-color: #c6f6d5; color: #22543d; }
+	.badge-error { background-color: #fed7d7; color: #742a2a; }
+	@keyframes pulse {
+		0% { opacity: 1; }
+		50% { opacity: 0.5; }
+		100% { opacity: 1; }
+	}
+	
+	.opt-table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 0 0 20px 0;
+		background: #ffffff;
+		border: 1px solid #e2e8f0;
+		border-radius: 8px;
+		overflow: hidden;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+	}
+	.dark-mode .opt-table,
+	[data-theme="dark"] .opt-table {
+		background: #2d2d2d;
+		border-color: #3f3f3f;
+	}
+	.opt-table th {
+		background: #edf2f7;
+		font-size: 12px;
+		padding: 12px 16px;
+		text-align: left;
+		color: #4a5568;
+		font-weight: bold;
+		border-bottom: 2px solid #e2e8f0;
+	}
+	.dark-mode .opt-table th,
+	[data-theme="dark"] .opt-table th {
+		background: #1a1a1a;
+		color: #a0aec0;
+		border-bottom: 2px solid #3f3f3f;
+	}
+	.opt-table td {
+		padding: 12px 16px;
+		font-size: 13px;
+		border-bottom: 1px solid #edf2f7;
+		color: #2d3748;
+		vertical-align: middle;
+	}
+	.dark-mode .opt-table td,
+	[data-theme="dark"] .opt-table td {
+		border-color: #3f3f3f;
+		color: #cbd5e0;
+	}
+	.opt-table tr.main-row:hover {
+		background-color: #f7fafc;
+	}
+	.dark-mode .opt-table tr.main-row:hover,
+	[data-theme="dark"] .opt-table tr.main-row:hover {
+		background-color: #232323;
+	}
+	
+	.detail-box {
+		background: #edf2f7;
+		padding: 15px;
+		border-radius: 6px;
+		margin: 5px 0;
+		border: 1px solid #cbd5e0;
+	}
+	.dark-mode .detail-box,
+	[data-theme="dark"] .detail-box {
+		background: #1a1a1a;
+		border-color: #2d2d2d;
+	}
+	.detail-table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+	.detail-table th {
+		background: #cbd5e0 !important;
+		color: #2d3748 !important;
+		padding: 8px 12px !important;
+		font-size: 11px !important;
+		border-bottom: 1px solid #cbd5e0 !important;
+	}
+	.dark-mode .detail-table th,
+	[data-theme="dark"] .detail-table th {
+		background: #252525 !important;
+		color: #a0aec0 !important;
+		border-bottom: 1px solid #3f3f3f !important;
+	}
+	.detail-table td {
+		padding: 8px 12px !important;
+		font-size: 12px !important;
+		border-bottom: 1px solid #e2e8f0 !important;
+	}
+	.dark-mode .detail-table td,
+	[data-theme="dark"] .detail-table td {
+		border-color: #2d2d2d !important;
+	}
+	
+	.badge-ip {
+		display: inline-block;
+		background-color: #ebf8ff;
+		color: #2b6cb0;
+		padding: 2px 6px;
+		border-radius: 4px;
+		font-size: 12px;
+		font-family: monospace;
+		font-weight: bold;
+		margin-right: 5px;
+		border: 1px solid #bee3f8;
+	}
+	.dark-mode .badge-ip,
+	[data-theme="dark"] .badge-ip {
+		background-color: #2b6cb0;
+		color: #ebf8ff;
+		border-color: #2c5282;
+	}
+	.tag-selected {
+		background-color: #f6e05e;
+		color: #744210;
+		padding: 1px 6px;
+		border-radius: 4px;
+		font-size: 10px;
+		font-weight: bold;
+	}
+	.tag-https-ok {
+		background-color: #48bb78;
+		color: #ffffff;
+		padding: 2px 6px;
+		border-radius: 4px;
+		font-size: 10px;
+		font-weight: bold;
+	}
+	.tag-https-fail {
+		background-color: #e53e3e;
+		color: #ffffff;
+		padding: 2px 6px;
+		border-radius: 4px;
+		font-size: 10px;
+		font-weight: bold;
+	}
+	
+	.log-terminal {
+		width: 100%;
+		height: 200px;
+		background-color: #1a202c;
+		color: #48bb78;
+		font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+		font-size: 12px;
+		padding: 15px;
+		border-radius: 6px;
+		border: 1px solid #2d3748;
+		overflow-y: scroll;
+		line-height: 1.6;
+		margin-top: 10px;
+		box-sizing: border-box;
+	}
+</style>
+
+<div class="opt-container">
+	<div class="opt-header">
+		<div>
+			<h3 style="margin:0; font-size: 16px;"><%:Apple CDN 优选状态监控%></h3>
+			<p style="margin:5px 0 0 0; font-size:12px; color:#718096;" id="last_update_txt"><%:上次更新: --%></p>
+		</div>
+		<div style="display: flex; align-items: center;">
+			<span class="status-badge badge-idle" id="status_indicator"><%:正在读取...%></span>
+			<button type="button" class="cbi-button cbi-button-apply" id="btn_optimize" onclick="triggerOptimize()"><%:立即开始优化%></button>
+		</div>
+	</div>
+
+	<!-- Main Aggregated Services Table Wrapper -->
+	<div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 20px;">
+		<table class="opt-table" style="margin-bottom: 0; min-width: 900px; table-layout: fixed;">
+			<thead>
+				<tr>
+					<th style="width: 170px;">加速业务</th>
+					<th style="width: 170px;">核心种子域名</th>
+					<th>已生效泛解析子域</th>
+					<th style="width: 270px;">当前优选节点 (前三)</th>
+					<th style="width: 110px;">地理位置</th>
+					<th style="text-align:center; width: 100px;">测速详情</th>
+				</tr>
+			</thead>
+			<tbody id="summary_table_body">
+				<tr>
+					<td colspan="6" style="text-align:center; padding:30px; color:#a0aec0;"><%:正在加载业务数据...%></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Live Logging Terminal Panel -->
+	<div style="margin-top: 25px;">
+		<h4 style="margin: 0; font-size: 13px; color: #4a5568; display: flex; justify-content: space-between;">
+			<span><%:运行实时日志 (Execution Log)%></span>
+			<span style="font-weight: normal; font-size: 11px; color: #718096;"><%:后台多线程运行时可能存在乱序，此为正常现象%></span>
+		</h4>
+		<div class="log-terminal" id="log_box"><%:尚未启动优化任务。%></div>
+	</div>
+
+	<!-- Generated Hosts Rule list Collapsible Box -->
+	<div style="margin-top: 25px;">
+		<h4 style="margin: 0; font-size: 13px; color: #4a5568; display: flex; justify-content: space-between; align-items: center;">
+			<span><%:已生成的 Hosts 优选规则列表 (238条解析映射)%></span>
+			<button class="cbi-button cbi-button-neutral" id="btn_toggle_hosts" onclick="toggleHostsList()" style="font-size:11px; padding:2px 8px; margin:0;"><%:展开查看%></button>
+		</h4>
+		<textarea id="hosts_box" readonly="readonly" wrap="off" 
+		          style="display:none; width:100%; height:220px; font-family:Menlo, Monaco, Consolas, 'Courier New', monospace; background-color:#1a202c; color:#cbd5e0; padding:15px; border-radius:6px; border:1px solid #2d3748; font-size:12px; line-height:1.5; resize:vertical; margin-top:10px; box-sizing: border-box;"></textarea>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var isRunning = false;
+	var expandedDomains = {};
+
+	function getDomainLabel(domain) {
+		if (domain.includes("vod-ap-aoc.tv.apple.com")) return "Apple TV+ 视频点播 (主线)";
+		if (domain.includes("vod-ap1-aoc.tv.apple.com")) return "Apple TV+ 视频点播 (备份)";
+		if (domain.includes("mvod.itunes.apple.com")) return "Apple Music 音乐视频 (主线)";
+		if (domain.includes("mvod.itunes.g.aaplimg.com")) return "Apple Music 音乐视频 (cname 备份)";
+		if (domain.includes("aod.itunes.apple.com")) return "Apple Music 高清音频 (主线)";
+		if (domain.includes("hls.itunes.apple.com")) return "Apple TV+ 视频切片分发";
+		if (domain.includes("play-edge.itunes.apple.com")) return "Apple 播放边缘节点";
+		if (domain.includes("audio.itunes.apple.com")) return "Apple Music 音频分发服务器";
+		if (domain.includes("streamingaudio.itunes.apple.com")) return "Apple Music 音轨物理分发";
+		return "Apple 自定义优化业务";
+	}
+
+	function getDomainCoverage(domain) {
+		if (domain.includes("tv.apple.com")) {
+			return '<span style="color:#319795; font-weight:bold;"><%:已生效 100+ 个全球回切子域%></span>' +
+			       '<span style="display:block; font-size:11px; color:#718096; margin-top:2px;">(含 vod-fa / download-us 等)</span>';
+		}
+		if (domain.includes("itunes.apple.com") || domain.includes("aaplimg.com")) {
+			return '<span style="color:#2b6cb0; font-weight:bold;"><%:已生效 130+ 个全球回切子域%></span>' +
+			       '<span style="display:block; font-size:11px; color:#718096; margin-top:2px;">(含 mvod-fa / hls-svod-aoc-ve / vod-fa 等)</span>';
+		}
+		return '<span style="color:#718096;"><%:仅对主域名生效%></span>';
+	}
+
+	function getIpRegionCode(ip) {
+		if (ip.startsWith("17.253.84.") || 
+			ip.startsWith("17.253.85.") || 
+			ip.startsWith("17.253.86.") || 
+			ip.startsWith("17.253.87.")) {
+			return "HK";
+		}
+		if (ip.startsWith("17.253.69.") || 
+			ip.startsWith("17.253.71.") || 
+			ip.startsWith("17.253.75.")) {
+			return "JP";
+		}
+		if (ip.startsWith("17.253.114.") || 
+			ip.startsWith("17.253.115.")) {
+			return "KR";
+		}
+		if (ip.startsWith("17.253.112.") || 
+			ip.startsWith("17.253.113.")) {
+			return "FR";
+		}
+		return "Unknown";
+	}
+
+	function getIpRegion(ip) {
+		var code = getIpRegionCode(ip);
+		if (code === "Unknown") return "Apple CDN (Unknown)";
+		return "Apple CDN (" + code + ")";
+	}
+
+	function formatPingLatency(val) {
+		var num = parseFloat(val);
+		if (isNaN(num) || num >= 9999) return "--";
+		var color = "#48bb78"; // Green: <= 80ms
+		if (num > 80 && num <= 150) color = "#d69e2e"; // Yellow: 80ms - 150ms
+		if (num > 150) color = "#dd6b20"; // Red: > 150ms
+		return '<span style="color:' + color + '; font-weight:bold;">' + num.toFixed(1) + ' ms</span>';
+	}
+
+	function formatSslLatency(val) {
+		var num = parseFloat(val);
+		if (isNaN(num) || num >= 9999) return "--";
+		var color = "#48bb78"; // Green: <= 180ms
+		if (num > 180 && num <= 300) color = "#d69e2e"; // Yellow: 180ms - 300ms
+		if (num > 300) color = "#dd6b20"; // Red: > 300ms
+		return '<span style="color:' + color + '; font-weight:bold;">' + num.toFixed(1) + ' ms</span>';
+	}
+
+	function formatLoss(val) {
+		var num = parseInt(val);
+		if (isNaN(num)) return "--";
+		var color = "#48bb78";
+		if (num > 0 && num < 50) color = "#dd6b20";
+		if (num >= 50) color = "#e53e3e";
+		return '<span style="color:' + color + '; font-weight:bold;">' + num + '%</span>';
+	}
+
+	function toggleDetails(index) {
+		var detailsRow = document.getElementById('details_row_' + index);
+		var btn = document.getElementById('btn_toggle_' + index);
+		if (detailsRow.style.display === 'none') {
+			detailsRow.style.display = '';
+			btn.innerHTML = '<%:折叠详情%>';
+			expandedDomains[index] = true;
+		} else {
+			detailsRow.style.display = 'none';
+			btn.innerHTML = '<%:查看详情%>';
+			expandedDomains[index] = false;
+		}
+	}
+
+	function getCsrfToken() {
+		var tokenInput = document.querySelector('input[name="token"]');
+		if (tokenInput && tokenInput.value) {
+			return tokenInput.value;
+		}
+		return '<%=token%>';
+	}
+
+	function updateLogs() {
+		fetch('<%=luci.dispatcher.build_url("admin", "services", "apple_cdn_opt_api", "log")%>?token=' + getCsrfToken())
+			.then(function(response) { return response.text(); })
+			.then(function(text) {
+				var logBox = document.getElementById('log_box');
+				logBox.innerText = text;
+				// Auto scroll to bottom
+				logBox.scrollTop = logBox.scrollHeight;
+			})
+			.catch(function(err) {
+				console.error("Log fetch error: ", err);
+			});
+	}
+
+	function updateStatus() {
+		fetch('<%=luci.dispatcher.build_url("admin", "services", "apple_cdn_opt_api", "status")%>?token=' + getCsrfToken())
+			.then(function(response) { return response.json(); })
+			.then(function(data) {
+				var btn = document.getElementById('btn_optimize');
+				var indicator = document.getElementById('status_indicator');
+				var lastUpdate = document.getElementById('last_update_txt');
+				var summaryBody = document.getElementById('summary_table_body');
+
+				// Update indicator status
+				if (data.status === 'running') {
+					isRunning = true;
+					indicator.className = 'status-badge badge-running';
+					indicator.innerHTML = '<%:正在测试优化中...%>';
+					btn.disabled = true;
+					btn.innerHTML = '<%:正在测速中...%>';
+					
+					// Poll status and logs
+					setTimeout(updateStatus, 2000);
+					updateLogs();
+				} else {
+					if (isRunning) {
+						// State just completed, update log one final time
+						updateLogs();
+						isRunning = false;
+					}
+					if (data.status === 'success') {
+						indicator.className = 'status-badge badge-success';
+						indicator.innerHTML = '<%:空闲%>';
+					} else {
+						indicator.className = 'status-badge badge-idle';
+						indicator.innerHTML = '<%:未运行%>';
+					}
+					btn.disabled = false;
+					btn.innerHTML = '<%:立即开始优化%>';
+				}
+
+				if (data.last_update) {
+					lastUpdate.innerHTML = '<%:上次更新: %> ' + data.last_update;
+				}
+
+				if ((data.status === 'not_run' || !data.status) && (!data.domains || Object.keys(data.domains).length === 0)) {
+					summaryBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:#a0aec0;"><%:尚未进行任何测速。请点击右上角按钮开始优化。%></td></tr>';
+					return;
+				}
+
+				// Build the domains list and nodes tables
+				var html = '';
+				var domainIndex = 0;
+				for (var domain in data.domains) {
+					var domData = data.domains[domain];
+					var selectedList = domData.selected || [];
+					var testedList = domData.tested || [];
+
+					// Infer regional representation from selected IPs
+					var selectedRegions = [];
+					for (var i = 0; i < selectedList.length; i++) {
+						var reg = null;
+						for (var k = 0; k < testedList.length; k++) {
+							if (testedList[k].ip === selectedList[i]) {
+								reg = testedList[k].geo;
+								break;
+							}
+						}
+						if (!reg || reg === "Unknown") {
+							reg = getIpRegionCode(selectedList[i]);
+						}
+						if (selectedRegions.indexOf(reg) === -1) {
+							selectedRegions.push(reg);
+						}
+					}
+					var regionStr = selectedRegions.join(', ') || '无';
+
+					// Format selected tags with flex-wrap to prevent table stretch
+					var selectedTags = '<div style="display:flex; flex-wrap:wrap; gap:4px; max-width:250px;">';
+					if (selectedList.length === 0) {
+						selectedTags += '<span style="color:#e53e3e; font-size:12px;"><%:无可用优选 IP (握手失败)%></span>';
+					} else {
+						for (var i = 0; i < selectedList.length; i++) {
+							selectedTags += '<span class="badge-ip" style="margin:0;">' + selectedList[i] + '</span>';
+						}
+					}
+					selectedTags += '</div>';
+
+					// Toggle details row display state
+					var rowStyle = (expandedDomains[domainIndex] === true) ? '' : 'style="display:none;"';
+					var toggleBtnText = (expandedDomains[domainIndex] === true) ? '<%:折叠详情%>' : '<%:查看详情%>';
+
+					html += '<tr class="main-row">';
+					html += '  <td style="font-weight:bold; color: #2d3748;">' + getDomainLabel(domain) + '</td>';
+					html += '  <td><code style="font-size:11px;">' + domain + '</code></td>';
+					html += '  <td>' + getDomainCoverage(domain) + '</td>';
+					html += '  <td>' + selectedTags + '</td>';
+					html += '  <td style="font-weight:600; color:#4a5568;">' + regionStr + '</td>';
+					html += '  <td style="text-align:center;">';
+					html += '    <button type="button" class="cbi-button cbi-button-neutral" id="btn_toggle_' + domainIndex + '" onclick="toggleDetails(' + domainIndex + ')">' + toggleBtnText + '</button>';
+					html += '  </td>';
+					html += '</tr>';
+					
+					// Sub-row containing candidates details table
+					html += '<tr id="details_row_' + domainIndex + '" ' + rowStyle + '>';
+					html += '  <td colspan="6" style="padding:15px; background-color:#f7fafc;">';
+					html += '    <div class="detail-box">';
+					html += '      <h5 style="margin: 0 0 10px 0; font-size:12px; color:#2d3748;"><%:候选节点测速详情%></h5>';
+					html += '      <table class="detail-table">';
+					html += '        <thead>';
+					html += '          <tr>';
+					html += '            <th>IP 地址</th>';
+					html += '            <th>地理位置</th>';
+					html += '            <th>HTTPS 校验</th>';
+					html += '            <th>HTTPS 握手</th>';
+					html += '            <th>ICMP (Ping) 延迟</th>';
+					html += '            <th>网络抖动</th>';
+					html += '            <th>丢包率</th>';
+					html += '            <th>状态</th>';
+					html += '          </tr>';
+					html += '        </thead>';
+					html += '        <tbody>';
+
+					if (testedList.length === 0) {
+						html += '          <tr><td colspan="8" style="text-align:center; color:#a0aec0;"><%:未解析到匹配 Apple CDN (17.*) 的 IP，可能受当前网络 DNS 劫持阻断影响。%></td></tr>';
+					} else {
+						for (var j = 0; j < testedList.length; j++) {
+							var node = testedList[j];
+							var isSelected = selectedList.indexOf(node.ip) !== -1;
+							var httpsTag = node.https === 1 
+								? '<span class="tag-https-ok">HTTPS 可达</span>' 
+								: '<span class="tag-https-fail">连接失败</span>';
+							var sslLatency = (node.https === 1 && node.ssl) 
+								? formatSslLatency(node.ssl) 
+								: '<span style="color:#a0aec0;">--</span>';
+							var statusTag = isSelected 
+								? '<span class="tag-selected">★ 优选 (前三)</span>' 
+								: '<span style="color:#a0aec0;">候选</span>';
+
+							var ipGeo = (node.geo && node.geo !== "Unknown")
+								? "Apple CDN (" + node.geo + ")"
+								: getIpRegion(node.ip);
+
+							html += '          <tr>';
+							html += '            <td><code style="font-size:12px; font-weight:bold; color: #2b6cb0;">' + node.ip + '</code></td>';
+							html += '            <td>' + ipGeo + '</td>';
+							html += '            <td>' + httpsTag + '</td>';
+							html += '            <td>' + sslLatency + '</td>';
+							html += '            <td>' + formatPingLatency(node.avg) + '</td>';
+							html += '            <td>' + formatPingLatency(node.jitter) + '</td>';
+							html += '            <td>' + formatLoss(node.loss) + '</td>';
+							html += '            <td>' + statusTag + '</td>';
+							html += '          </tr>';
+						}
+					}
+
+					html += '        </tbody>';
+					html += '      </table>';
+					html += '    </div>';
+					html += '  </td>';
+					html += '</tr>';
+
+					domainIndex++;
+				}
+				summaryBody.innerHTML = html;
+			})
+			.catch(function(err) {
+				console.error(err);
+			});
+	}
+
+	function triggerOptimize() {
+		var btn = document.getElementById('btn_optimize');
+		var indicator = document.getElementById('status_indicator');
+		var logBox = document.getElementById('log_box');
+		
+		btn.disabled = true;
+		btn.innerHTML = '<%:正在发送请求...%>';
+		indicator.className = 'status-badge badge-running';
+		indicator.innerHTML = '<%:发送指令中...%>';
+		logBox.innerText = '<%:正在唤醒优选加速脚本...%>\n';
+
+		fetch('<%=luci.dispatcher.build_url("admin", "services", "apple_cdn_opt_api", "run")%>?token=' + getCsrfToken())
+			.then(function(response) {
+				if (!response.ok) {
+					throw new Error('HTTP status ' + response.status + ' (' + response.statusText + ')');
+				}
+				return response.json();
+			})
+			.then(function(data) {
+				isRunning = true;
+				// Start status and log loop
+				setTimeout(updateStatus, 1000);
+				setTimeout(updateLogs, 1000);
+			})
+			.catch(function(err) {
+				alert('触发测速优化失败: ' + err.message + '\n请检查路由器系统及插件安装是否完整！');
+				updateStatus();
+			});
+	}
+
+	function toggleHostsList() {
+		var box = document.getElementById('hosts_box');
+		var btn = document.getElementById('btn_toggle_hosts');
+		if (box.style.display === 'none') {
+			btn.innerHTML = '<%:正在读取...%>';
+			fetch('<%=luci.dispatcher.build_url("admin", "services", "apple_cdn_opt_api", "hosts")%>?token=' + getCsrfToken())
+				.then(function(response) { return response.text(); })
+				.then(function(text) {
+					box.value = text;
+					box.style.display = '';
+					btn.innerHTML = '<%:折叠查看%>';
+				})
+				.catch(function(err) {
+					alert('获取 Hosts 规则失败: ' + err);
+					btn.innerHTML = '<%:展开查看%>';
+				});
+		} else {
+			box.style.display = 'none';
+			btn.innerHTML = '<%:展开查看%>';
+		}
+	}
+
+	// Run initial loading updates
+	updateStatus();
+	updateLogs();
+</script>

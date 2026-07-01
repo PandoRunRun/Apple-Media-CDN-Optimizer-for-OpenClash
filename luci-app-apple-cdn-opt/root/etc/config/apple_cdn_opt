@@ -1,0 +1,18 @@
+config global
+	option enabled '0'
+	option cron_time '6hours'
+	option test_timeout '2'
+	option region_hk '1'
+	option region_jp '1'
+	option region_kr '1'
+	option region_tw '1'
+	option region_sg '1'
+
+
+config domains
+	list domain 'vod-ap-aoc.tv.apple.com'
+	list domain 'vod-ap1-aoc.tv.apple.com'
+	list domain 'vod-fa-aoc.tv.apple.com'
+	list domain 'mvod.itunes.apple.com'
+	list domain 'mvod.itunes.g.aaplimg.com'
+	list domain 'aod.itunes.apple.com'
